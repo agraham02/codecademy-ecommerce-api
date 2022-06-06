@@ -1,0 +1,157 @@
+openapi: 3.0.1
+info:
+  title: Codecademy E-Commerce API
+  version: 1.0.0
+  termsOfService: https://smartbear.com/terms-of-use/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /products:
+    summary: Gets all of the products
+    description: This path gets all of the products from the database
+    get:
+      summary: Gets all of the products
+      description: ''
+      operationId: getOrders
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Product
+  /products/{id}:
+    summary: Gets a specific product
+    description: This path gets a specific product (by the id) from the database
+    get:
+      summary: Gets a specific product
+      description: ''
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Product
+  /products/{department}:
+    summary: Gets all of the products from a department
+    description: >-
+      This path gets all of the products in a specific department from the
+      database
+    get:
+      summary: Gets all of the products by department
+      description: ''
+      operationId: getProductsByDepartment
+      parameters:
+        - name: department
+          in: path
+          description: 'The departmant of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Product
+  /account:
+    summary: Gets my account details
+    get:
+      summary: Gets account details for a specific id
+      description: ''
+      operationId: getAccountById
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+    put:
+      summary: Updates an account's details
+      description: ''
+      operationId: updateAccountById
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+    delete:
+      summary: Deletes a specified account
+      description: ''
+      operationId: deleteAccountById
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+  /account/register:
+    summary: Adds a new user to the database
+    post:
+      summary: Adds a new account to the database
+      description: ''
+      operationId: addNewAccount
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+  /cart:
+    summary: Gets my cart details
+    get:
+      summary: Get my cart
+      description: ''
+      operationId: getCart
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /account/orders:
+    get:
+      summary: Gets all of the orders the account has made
+      description: ''
+      operationId: getAccountOrders
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+  /checkout: {}
+  /order-confirmation: {}
+  /account/orders/{order_number}:
+    get:
+      summary: Gets the order details of a specific order
+      description: ''
+      operationId: getOrderById
+      parameters:
+        - name: order_number
+          in: path
+          description: 'The id of the order.'
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
+    delete:
+      summary: Deletes the specified order
+      description: ''
+      operationId: deleteOrderById
+      parameters:
+        - name: order_number
+          in: path
+          description: 'The id of the order.'
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Account
