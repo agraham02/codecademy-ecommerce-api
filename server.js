@@ -1,14 +1,16 @@
 //Imports
 const express = require("express");
-const { append } = require("express/lib/response");
-const db = require("./queries");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const errorHandler = require("errorhandler");
 const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 //Routes
 const productsRouter = require("./routes/productRoutes");
-const { user } = require("pg/lib/defaults");
+const cartRouter = require("./routes/cartRoutes");
+const ordersRouter = require("./routes/orderRoutes");
+const accountRouter = require("./routes/accountRoutes");
 
 //Server setup
 const server = express();
@@ -33,6 +35,9 @@ server.use(session({
 }));
 
 server.use("/products", productsRouter);
+server.use("/cart", cartRouter);
+server.use("/orders", ordersRouter);
+server.use("/account", accountRouter);
 
 function ensureAuthentication(req, res, next) {
     // Complete the if statmenet below:
@@ -45,36 +50,6 @@ function ensureAuthentication(req, res, next) {
 
 server.get("/", (req, res) => {
     res.send("Codecademy E-Commerce Store Home");
-});
-
-server.get("/login", (req, res) => {
-    res.send("Login Page");
-});
-
-server.post("/login", async (req, res, next) => {
-    const { email, password } = req.body;
-    const user = await (await db.getUserByEmail(email)).rows[0];
-    console.log(`\tUser: ${user.email}`);
-    if (user.password === password) {
-        req.session.authenticated = true;
-        req.session.user = {
-            email, password
-        }
-        console.log(req.session);
-        res.json(req.session.user);
-    } else {
-        //Example error throwing
-        const error = new Error("Invalid password");
-        error.status = 403;
-        return next(error);
-    }
-});
-
-server.get("/account/:email", async (req, res) => {
-    const email = req.params.email;
-    console.log(email);
-    const user = await db.getUserByEmail(email);
-    res.json(user);
 });
 
 server.use(errorHandler());
