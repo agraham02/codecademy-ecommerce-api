@@ -51,13 +51,11 @@ server.get("/login", (req, res) => {
     res.send("Login Page");
 });
 
-const oldUuser = {
-    email: "acgraham02@gmail.com",
-    password: "Farkle02"
-}
-server.post("/login", (req, res, next) => {
+server.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
-    if (oldUuser.password === password) {
+    const user = await (await db.getUserByEmail(email)).rows[0];
+    console.log(`\tUser: ${user.email}`);
+    if (user.password === password) {
         req.session.authenticated = true;
         req.session.user = {
             email, password
@@ -70,6 +68,13 @@ server.post("/login", (req, res, next) => {
         error.status = 403;
         return next(error);
     }
+});
+
+server.get("/account/:email", async (req, res) => {
+    const email = req.params.email;
+    console.log(email);
+    const user = await db.getUserByEmail(email);
+    res.json(user);
 });
 
 server.use(errorHandler());
