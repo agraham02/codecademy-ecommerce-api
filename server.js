@@ -5,55 +5,61 @@ const bodyParser = require("body-parser");
 const errorHandler = require("errorhandler");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const initializePassport = require("./passportConfig");
+const bcrypt = require("bcrypt");
+const flash = require("express-flash");
+// const pgSession = require("express-pg-session")(session);
+//
+const pool = require("./dbConfig");
+const queries = require("./queries");
 //Routes
 const productsRouter = require("./routes/productRoutes");
 const cartRouter = require("./routes/cartRoutes");
 const ordersRouter = require("./routes/orderRoutes");
 const accountRouter = require("./routes/accountRoutes");
+const logInRouter = require("./routes/logInRoutes");
 
 //Server setup
-const server = express();
+const app = express();
 const PORT =  process.env.PORT || 3000;
+initializePassport(passport);
 
-server.use(morgan("dev"));
+app.use(morgan("dev"));
 
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const store = new session.MemoryStore(); //need to replace this with database storage
-server.use(session({
+app.use(session({
     secret: "BBunnyX9", //should be an environment variable
-    cookie: {
-        maxAge: 1000 * 60 *60 * 24,
-        secure: true,
-        sameSite: "none"
-    },
+    // cookie: {
+    //     maxAge: 1000 * 60 *60 * 24,
+    //     secure: true,
+    //     sameSite: "none"
+    // },
     resave: false,
     saveUninitialized: false,
     store
 }));
 
-server.use("/products", productsRouter);
-server.use("/cart", cartRouter);
-server.use("/orders", ordersRouter);
-server.use("/account", accountRouter);
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('session'));
 
-function ensureAuthentication(req, res, next) {
-    // Complete the if statmenet below:
-    if (req.session.authenticated) {
-      return next();
-    } else {
-      res.status(403).json({ msg: "You're not authorized to view this page" });
-    }
-  }
+//Use routes
+app.use("/products", productsRouter);
+// app.use("/cart", cartRouter);
+// app.use("/orders", ordersRouter);
+app.use("/account", accountRouter);
+app.use("/", logInRouter);
 
-server.get("/", (req, res) => {
+app.get("/", (req, res) => {
     res.send("Codecademy E-Commerce Store Home");
 });
 
-server.use(errorHandler());
+app.use(errorHandler());
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
 });

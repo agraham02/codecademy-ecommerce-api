@@ -1,9 +1,37 @@
-const getProducts = "SELECT * FROM product ORDER BY department_id";
-const getProductById = "SELECT * FROM product WHERE id = $1";
-const getProductsByDepartment = "SELECT product.*, department.name AS department FROM product, department WHERE product.department_id = department.id AND department.name = $1";
+const pool = require("./dbConfig");
+const { productQueries, userQueries} = require("./queriesText");
 
-const getUserByEmail = "SELECT * FROM customer WHERE email = $1";
-const addNewUser = "INSERT INTO customer (first_name, last_name, email, password) VALUES ($1, $2, $3, $4);"
+//Products
+//check for errors
+const getProducts = async () => {
+    const results = await (await pool.query(productQueries.getProducts)).rows;
+    return results;
+};
+
+const getProductsByDepartment = async (department) => {
+    const results = await (await pool.query(productQueries.getProductsByDepartment, [department])).rows;
+    return results;
+};
+
+const getProductById = async (id) => {
+    const result = await (await pool.query(productQueries.getProductById, [id])).rows[0];
+    return result;
+};
+
+//Users
+const getUserByEmail = async (email) => {
+    const result = await (await pool.query(userQueries.getUserByEmail, [email])).rows[0];
+    return result;
+}
+
+const getUserById = async (id) => {
+    const result = await (await pool.query(userQueries.getUserById, [id])).rows[0];
+    return result;
+}
+
+const addNewUser = async (firstName, lastName, email, hashedPassword) => {
+    await pool.query(userQueries.addNewUser, [firstName, lastName, email, hashedPassword]);
+}
 
 module.exports = {
     products: {
@@ -13,6 +41,7 @@ module.exports = {
     },
     users: {
         getUserByEmail,
+        getUserById,
         addNewUser
     }
 };
