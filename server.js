@@ -54,13 +54,19 @@ app.use(passport.authenticate('session'));
 //Use routes
 app.use("/products", productsRouter);
 app.use("/account", accountRouter);
-// app.use("/cart", cartRouter);
+app.use("/cart", cartRouter);
 // app.use("/orders", ordersRouter);
 app.use("/", logInRouter);
 
 app.get("/", (req, res) => {
     res.send("Codecademy E-Commerce Store Home");
 });
+
+app.post("/", (req, res) => {
+    const body = req.body;
+    const test = body[1];
+    res.send(test);
+})
 
 app.use(errorHandler());
 

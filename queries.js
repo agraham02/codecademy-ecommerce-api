@@ -38,6 +38,15 @@ const createNewCart = async (userId) => {
     await pool.query(cartQueries.addNewCart, [userId]);
 }
 
+const getCartByUserId = async (userId) => {
+    const result = await (await pool.query(cartQueries.getCartByUserId, [userId])).rows[0];
+    return result;
+}
+
+const updateCartContentsForUser = async (content, userId) => {
+    await pool.query(cartQueries.updateCartContentsForUser, [content, userId]);
+}
+
 module.exports = {
     products: {
         getProducts,
@@ -50,6 +59,8 @@ module.exports = {
         addNewUser
     },
     cart: {
-        createNewCart
+        createNewCart,
+        getCartByUserId,
+        updateCartContentsForUser
     }
 };

@@ -9,7 +9,10 @@ const getUserById = "SELECT * FROM customer WHERE id = $1";
 const addNewUser = "INSERT INTO customer (first_name, last_name, email, password) VALUES ($1, $2, $3, $4);"
 
 //Cart
-const addNewCart = "INSERT INTO user_cart (user_id) VALUES ($1)";
+const addNewCart = "INSERT INTO users_cart (user_id) VALUES ($1)";
+const insertIntoCart = "INSERT INTO carts_products (contents) VALUES ($1)";
+const updateCartContentsForUser = "UPDATE users_cart SET contents = $1 WHERE user_id = $2";
+const getCartByUserId = "SELECT * FROM users_cart WHERE user_id = $1";
 
 module.exports = {
     productQueries: {
@@ -23,6 +26,9 @@ module.exports = {
         addNewUser
     },
     cartQueries: {
-        addNewCart
+        addNewCart,
+        insertIntoCart,
+        updateCartContentsForUser,
+        getCartByUserId
     }
 };
