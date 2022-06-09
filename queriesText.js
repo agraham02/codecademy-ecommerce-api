@@ -9,6 +9,7 @@ const getUserById = "SELECT * FROM customer WHERE id = $1";
 const addNewUser = "INSERT INTO customer (first_name, last_name, email, password) VALUES ($1, $2, $3, $4);"
 
 //Cart
+const addNewCart = "INSERT INTO user_cart (user_id) VALUES ($1)";
 
 module.exports = {
     productQueries: {
@@ -20,5 +21,8 @@ module.exports = {
         getUserByEmail,
         getUserById,
         addNewUser
+    },
+    cartQueries: {
+        addNewCart
     }
 };

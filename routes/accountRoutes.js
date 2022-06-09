@@ -29,9 +29,10 @@ accountRouter.get("/", checkAuthentication, async (req, res, next) => {
     }
 });
 
-accountRouter.get("/account/:id", async (req, res) => {
+//check if authorized before getting account
+accountRouter.get("/:id", async (req, res) => {
     const id = req.params.id;
-    const user = await userQueries.getUserById(id);
+    const user = await users.getUserById(id);
     res.send(user);
 });
 

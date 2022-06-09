@@ -1,5 +1,7 @@
 const express = require("express");
 const passport = require("passport");
+const queries = require("../queries");
+const bcrypt = require("bcrypt");
 const logInRouter = express.Router();
 
 const passwordHash = async (password, saltRounds) => {
@@ -35,6 +37,8 @@ logInRouter.post("/register", async (req, res, next) => {
 
         const hashedPassword = await passwordHash(password, 10);
         queries.users.addNewUser(firstName, lastName, email, hashedPassword);
+        const u = await queries.users.getUserByEmail(email);
+        queries.cart.createNewCart(u.id);
         res.redirect("/login");
     } catch (error) {
         return next(error);

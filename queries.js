@@ -1,5 +1,5 @@
 const pool = require("./dbConfig");
-const { productQueries, userQueries} = require("./queriesText");
+const { productQueries, userQueries, cartQueries} = require("./queriesText");
 
 //Products
 //check for errors
@@ -33,6 +33,11 @@ const addNewUser = async (firstName, lastName, email, hashedPassword) => {
     await pool.query(userQueries.addNewUser, [firstName, lastName, email, hashedPassword]);
 }
 
+//Cart
+const createNewCart = async (userId) => {
+    await pool.query(cartQueries.addNewCart, [userId]);
+}
+
 module.exports = {
     products: {
         getProducts,
@@ -43,5 +48,8 @@ module.exports = {
         getUserByEmail,
         getUserById,
         addNewUser
+    },
+    cart: {
+        createNewCart
     }
 };

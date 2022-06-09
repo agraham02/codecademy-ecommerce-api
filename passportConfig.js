@@ -15,7 +15,6 @@ function initializePassport(passport) {
     const authenticateUser = async (email, password, done) => {
         try {
             const user = await users.getUserByEmail(email);
-            console.log(`\tUser: ${user.id}`);
             if (!user) {
                 console.log("User not found");
                 return done(null, false, { message: "User not found" });
