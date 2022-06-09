@@ -47,6 +47,14 @@ const updateCartContentsForUser = async (content, userId) => {
     await pool.query(cartQueries.updateCartContentsForUser, [content, userId]);
 }
 
+const updateCartPriceForUser = async (priceToAdd, userId) => {
+    await pool.query(cartQueries.updateCartPriceForUser, [priceToAdd, userId]);
+}
+
+const clearCart = async (userId) => {
+    await pool.query(cartQueries.clearCart, [userId]);
+}
+
 module.exports = {
     products: {
         getProducts,
@@ -61,6 +69,8 @@ module.exports = {
     cart: {
         createNewCart,
         getCartByUserId,
-        updateCartContentsForUser
+        updateCartContentsForUser,
+        updateCartPriceForUser,
+        clearCart
     }
 };
