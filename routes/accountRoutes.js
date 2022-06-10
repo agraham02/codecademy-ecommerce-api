@@ -24,8 +24,8 @@ accountRouter.get("/", checkAuthentication, async (req, res, next) => {
         res.send(user);
     } else {
         user = await req.user;
-        res.send(`${user.first_name}'s Account`);
-        // res.send(user);
+        // res.send(`${user.first_name}'s Account`);
+        res.send(user);
     }
 });
 

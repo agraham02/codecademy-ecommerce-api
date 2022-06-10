@@ -18,6 +18,7 @@ const cartRouter = require("./routes/cartRoutes");
 const ordersRouter = require("./routes/orderRoutes");
 const accountRouter = require("./routes/accountRoutes");
 const logInRouter = require("./routes/logInRoutes");
+const checkoutRouter = require("./routes/checkoutRoutes");
 
 //Server setup
 const app = express();
@@ -55,6 +56,7 @@ app.use(passport.authenticate('session'));
 app.use("/products", productsRouter);
 app.use("/account", accountRouter);
 app.use("/cart", cartRouter);
+app.use("/checkout", checkoutRouter);
 // app.use("/orders", ordersRouter);
 app.use("/", logInRouter);
 

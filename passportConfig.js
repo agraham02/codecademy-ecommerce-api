@@ -1,4 +1,4 @@
-const { users } = require("./queries");
+const { users, cart } = require("./queries");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 

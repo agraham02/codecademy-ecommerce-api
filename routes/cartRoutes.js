@@ -82,7 +82,7 @@ cartRouter.put("/removeItem", async (req, res) => {
     const userCart = await cart.getCartByUserId(user.id);
     const product = await products.getProductById(productId);
     let contents = userCart.contents;
-    const priceToSubtract = (product.price * 1) * contents[productId].quantity;
+    const priceToSubtract = (product.price * -1) * contents[productId].quantity;
     if (contents[productId]) {
         delete contents[productId];
         await cart.updateCartContentsForUser(JSON.stringify(contents), user.id);

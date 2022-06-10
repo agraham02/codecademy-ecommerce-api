@@ -1,5 +1,5 @@
 const pool = require("./dbConfig");
-const { productQueries, userQueries, cartQueries} = require("./queriesText");
+const { productQueries, userQueries, cartQueries, checkoutQueries} = require("./queriesText");
 
 //Products
 //check for errors
@@ -55,6 +55,19 @@ const clearCart = async (userId) => {
     await pool.query(cartQueries.clearCart, [userId]);
 }
 
+//Checkout
+const addNewShippingAddress = async (street, city, state, zip_code, user_id) => {
+    await pool.query(checkoutQueries.addNewShippingAddress, [street, city, state, zip_code, user_id]);
+}
+
+const addNewPayment = async (cardNumber, type, userId, billingAddressId) => {
+    await pool.query(checkoutQueries.addNewPayment, [cardNumber, type, userId, billingAddressId]);
+}
+
+const finalizeOrder = async (payment_id, subtotal, tax, total, contents, shipping_address_id) => {
+    await pool.query(checkoutQueries.addNewOrder, [payment_id, subtotal, tax, total, contents, shipping_address_id]);
+}
+
 module.exports = {
     products: {
         getProducts,
@@ -72,5 +85,13 @@ module.exports = {
         updateCartContentsForUser,
         updateCartPriceForUser,
         clearCart
+    },
+    checkout: {
+        addNewShippingAddress,
+        addNewPayment,
+        finalizeOrder
+    },
+    order: {
+        
     }
 };

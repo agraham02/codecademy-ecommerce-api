@@ -16,6 +16,11 @@ const updateCartPriceForUser = "UPDATE users_cart SET total = total + $1 WHERE u
 const getCartByUserId = "SELECT * FROM users_cart WHERE user_id = $1";
 const clearCart = "UPDATE users_cart SET contents = DEFAULT, total = DEFAULT WHERE user_id = $1";
 
+//Checkout
+const addNewShippingAddress = "INSERT INTO address (street, city, state, zip_code, customer_id) VALUES ($1, $2, $3, $4, $5)";
+const addNewPayment = "INSERT INTO payment (card_number, type, customer_id, billing_address_id) VALUES ($1, $2, $3, $4)";
+const addNewOrder = "INSERT INTO public.order (payment_id, subtotal, tax, total, contents, shipping_address_id) VALUES ($1, $2, $3, $4, $5, $6)";
+
 module.exports = {
     productQueries: {
         getProducts,
@@ -34,5 +39,13 @@ module.exports = {
         updateCartPriceForUser,
         getCartByUserId,
         clearCart
+    },
+    checkoutQueries: {
+        addNewOrder,
+        addNewShippingAddress,
+        addNewPayment
+    },
+    orderQueries: {
+        
     }
 };
