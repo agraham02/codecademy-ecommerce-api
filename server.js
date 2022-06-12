@@ -57,7 +57,7 @@ app.use("/products", productsRouter);
 app.use("/account", accountRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter);
-// app.use("/orders", ordersRouter);
+app.use("/orders", ordersRouter);
 app.use("/", logInRouter);
 
 app.get("/", (req, res) => {

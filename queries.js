@@ -1,5 +1,5 @@
 const pool = require("./dbConfig");
-const { productQueries, userQueries, cartQueries, checkoutQueries} = require("./queriesText");
+const { productQueries, userQueries, cartQueries, checkoutQueries, orderQueries} = require("./queriesText");
 
 //Products
 //check for errors
@@ -86,6 +86,21 @@ const getPaymentByPayment = async (cardNumber, type, billingAddressId) => {
     return results.rows[0];
 }
 
+//Orders
+const getOrdersByUserId = async (userId) => {
+    const results = await (await pool.query(orderQueries.getOrdersByUserId, [userId])).rows;
+    return results;
+}
+
+const getOrderById = async (orderId) => {
+    const result = await (await pool.query(orderQueries.getOrderById, [orderId])).rows[0];
+    return result;
+}
+
+const cancelOrderByOrderId = async (orderId) => {
+    await pool.query(orderQueries.cancelOrderByOrderId, [orderId]);
+}
+
 module.exports = {
     products: {
         getProducts,
@@ -114,6 +129,8 @@ module.exports = {
         getPaymentByPayment
     },
     order: {
-        
+        getOrdersByUserId,
+        getOrderById,
+        cancelOrderByOrderId
     }
 };
