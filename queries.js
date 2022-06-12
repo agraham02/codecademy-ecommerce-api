@@ -64,8 +64,26 @@ const addNewPayment = async (cardNumber, type, userId, billingAddressId) => {
     await pool.query(checkoutQueries.addNewPayment, [cardNumber, type, userId, billingAddressId]);
 }
 
-const finalizeOrder = async (payment_id, subtotal, tax, total, contents, shipping_address_id) => {
-    await pool.query(checkoutQueries.addNewOrder, [payment_id, subtotal, tax, total, contents, shipping_address_id]);
+const finalizeOrder = async (payment_id, subtotal, tax, total, contents, shipping_address_id, userId) => {
+    await pool.query(checkoutQueries.addNewOrder, [payment_id, subtotal, tax, total, contents, shipping_address_id, userId]);
+}
+
+const updateCartShippingAddress = async (shipping_address_id, userId) => {
+    await pool.query(checkoutQueries.updateCartShippingAddress, [shipping_address_id, userId]);
+}
+
+const updateCartPayment = async (payment_id, userId) => {
+    await pool.query(checkoutQueries.updateCartPayment, [payment_id, userId]);
+}
+
+const getAddressByAddress = async (street, city, state, zipcode) => {
+    const results = await pool.query(checkoutQueries.getAddressByAddress, [street, city, state, zipcode]);
+    return results.rows[0];
+}
+
+const getPaymentByPayment = async (cardNumber, type, billingAddressId) => {
+    const results = await pool.query(checkoutQueries.getPaymentByPayment, [cardNumber, type, billingAddressId]);
+    return results.rows[0];
 }
 
 module.exports = {
@@ -89,7 +107,11 @@ module.exports = {
     checkout: {
         addNewShippingAddress,
         addNewPayment,
-        finalizeOrder
+        finalizeOrder, 
+        updateCartShippingAddress, 
+        updateCartPayment,
+        getAddressByAddress,
+        getPaymentByPayment
     },
     order: {
         

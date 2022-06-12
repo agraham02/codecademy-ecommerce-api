@@ -1,0 +1,7 @@
+{
+    "cardNumber": 1234567890123456,
+    "type": "VISA",
+    "userId": 2,
+    "billingAddressId": 1,
+    "saveShipping": true
+}
