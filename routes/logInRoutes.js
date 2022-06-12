@@ -1,6 +1,6 @@
 const express = require("express");
 const passport = require("passport");
-const queries = require("../queries");
+const { users, cart } = require("../db/queries");
 const bcrypt = require("bcrypt");
 const logInRouter = express.Router();
 
@@ -26,7 +26,7 @@ logInRouter.get("/register", (req, res) => {
 logInRouter.post("/register", async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
     try {
-        const user = await queries.users.getUserByEmail(email);
+        const user = await users.getUserByEmail(email);
         if (user) {
             //there's already a user with that email
             console.log("There's already a user with that email")
@@ -36,10 +36,16 @@ logInRouter.post("/register", async (req, res, next) => {
         }
     
         const hashedPassword = await passwordHash(password, 10);
-        queries.users.addNewUser(firstName, lastName, email, hashedPassword);
-        const u = await queries.users.getUserByEmail(email);
-        queries.cart.createNewCart(u.id);
-        res.redirect("/login");        
+        users.addNewUser(firstName, lastName, email, hashedPassword);
+        console.log(email);
+        let u;
+        setTimeout(async () => {
+            u = await users.getUserByEmail(email);
+            console.log(u);
+            cart.createNewCart(u.id);
+            res.redirect("/login");        
+        }, 300);
+        console.log("Hey");
     } catch (error) {
         const e = new Error(`Server Error: ${error.message}`);
         e.status = 500;

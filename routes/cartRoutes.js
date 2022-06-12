@@ -1,7 +1,6 @@
 const express = require("express");
-const {products, cart } = require("../queries");
+const {products, cart } = require("../db/queries");
 const cartRouter = express.Router();
-const db = require("../queries");
 
 //might use middleware to check if user is logged in
 function checkAuthentication(req, res, next) {

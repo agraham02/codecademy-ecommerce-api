@@ -1,9 +1,10 @@
 const express = require("express");
-const { products  } = require("../queries");
+const { products  } = require("../db/queries");
 const productsRouter = express.Router();
 
 productsRouter.get("/", async (req, res, next) => {
     const department = req.query.department;
+    console.log(department);
     let results;
     try {
         if (department) {

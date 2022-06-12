@@ -1,8 +1,8 @@
 const express = require("express");
-const pool = require("../dbConfig");
+const pool = require("../db/dbConfig");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
-const { users, order } = require("../queries");
+const { users } = require("../db/queries");
 const accountRouter = express.Router();
 
 //might have as route middleware
@@ -33,7 +33,7 @@ accountRouter.get("/:id", async (req, res, next) => {
     const id = req.params.id;
     try {
         const user = await req.user;
-        if (user.id === id) { //or isAdmin
+        if (user.id === parseInt(id)) { //or isAdmin
             const u = await users.getUserById(id);
             res.json(u);
         } else {

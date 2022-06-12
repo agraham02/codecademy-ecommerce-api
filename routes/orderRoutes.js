@@ -1,6 +1,6 @@
 const express = require("express");
 const ordersRouter = express.Router();
-const { order } = require("../queries");
+const { order } = require("../db/queries");
 
 ordersRouter.get("/", async (req, res, next) => {
     try {

@@ -1,5 +1,5 @@
 Test user:
-email: test@test.com
+email: test@dummy.com
 password: test123
 
 Admin user

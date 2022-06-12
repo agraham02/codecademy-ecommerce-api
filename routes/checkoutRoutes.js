@@ -1,6 +1,6 @@
 const express = require("express");
 const checkoutRouter = express.Router();
-const { checkout, cart, order } = require("../queries");
+const { checkout, cart } = require("../db/queries");
 
 const TAX = 0.053;
 

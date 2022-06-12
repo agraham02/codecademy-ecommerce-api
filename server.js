@@ -10,8 +10,8 @@ const bcrypt = require("bcrypt");
 const flash = require("express-flash");
 const pgSession = require("connect-pg-simple")(session);
 //
-const pool = require("./dbConfig");
-const queries = require("./queries");
+const pool = require("./db/dbConfig");
+const queries = require("./db/queries");
 //Routes
 const productsRouter = require("./routes/productRoutes");
 const cartRouter = require("./routes/cartRoutes");
@@ -19,6 +19,7 @@ const ordersRouter = require("./routes/orderRoutes");
 const accountRouter = require("./routes/accountRoutes");
 const logInRouter = require("./routes/logInRoutes");
 const checkoutRouter = require("./routes/checkoutRoutes");
+const { users } = require("./db/queries");
 
 //Server setup
 const app = express();
@@ -68,6 +69,11 @@ app.post("/", (req, res) => {
     const body = req.body;
     const test = body[1];
     res.send(test);
+});
+
+app.get("/test", async (req, res) => {
+    const user = await users.getUserByEmail("acgraham02@gmail.com");
+    console.log(user);
 })
 
 app.use(errorHandler());
